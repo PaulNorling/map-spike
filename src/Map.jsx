@@ -9,9 +9,20 @@ import './Map.css'
 
 function Map(){
   
+  const [latitude, setLatitude] = useState(null);
+  const [longitude, setLongitude] = useState(null);
+  navigator.geolocation.getCurrentPosition(showPosition);
   
+
+  
+
+function showPosition(position) {
+    console.log(position.coords.latitude, position.coords.longitude)
+    setLatitude(position.coords.latitude);
+    setLongitude(position.coords.longitude)
+}
     
-    
+    console.log('working?', latitude)
 
     
 
@@ -36,8 +47,8 @@ function Map(){
       <LoadScript
       googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}>
       <GoogleMap 
-        zoom={10.6} 
-        center={{lat: 45.0560, lng: -92.8088}}
+        zoom={19} 
+        center={{lat: latitude, lng: longitude}}
         mapContainerClassName="map-container"
         onClick={() => setActiveMarker(null)}
       >
