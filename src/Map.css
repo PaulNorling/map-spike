@@ -1,0 +1,28 @@
+.map-container {
+    width: 90%;
+    height: 90vh;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 10px;
+}
+
+.infoWindow-image {
+    width: 150px;
+    height: 150px;
+    margin: 5px;
+    border-radius: 3px;
+}
+
+.infoWindow {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+.infoWindow-heading{
+    width: 140px;
+    height: auto;
+    font-weight: 700;
+    color: black;
+}
