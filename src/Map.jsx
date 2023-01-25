@@ -1,6 +1,6 @@
 
 
-import { GoogleMap, useLoadScript, Marker, MarkerF, LoadScript, InfoWindow } from "@react-google-maps/api";
+import { GoogleMap, useLoadScript, Marker, MarkerF, LoadScript, InfoWindowF } from "@react-google-maps/api";
 
 import React, { useEffect, useState } from 'react';
 
@@ -9,20 +9,32 @@ import './Map.css'
 
 function Map(){
   
-  const [latitude, setLatitude] = useState(null);
-  const [longitude, setLongitude] = useState(null);
-  navigator.geolocation.getCurrentPosition(showPosition);
-  
+  const [latitude, setLatitude] = useState(39.8283);
+  const [longitude, setLongitude] = useState(-98.5795);
+  const [focus, setFocus] = useState(5);
 
+  // navigator.geolocation.getCurrentPosition(showPosition);
   
+useEffect (() => {
+  userPosition()
+}, [])
 
-function showPosition(position) {
-    console.log(position.coords.latitude, position.coords.longitude)
+const userPosition = () => {
+  navigator.geolocation.getCurrentPosition(position => {
     setLatitude(position.coords.latitude);
-    setLongitude(position.coords.longitude)
+    setLongitude(position.coords.longitude);
+    setFocus(10);
+  });
 }
+
+// function showPosition(position) {
+//     console.log(position.coords.latitude, position.coords.longitude)
+//     setLatitude(position.coords.latitude);
+//     setLongitude(position.coords.longitude)
+//     setFocus(10)
+// }
     
-    console.log('working?', latitude)
+    
 
     
 
@@ -37,34 +49,37 @@ function showPosition(position) {
     const [activeMarker, setActiveMarker] = useState(null);
 
     const handleActiveMarker = (marker) => {
-      if (marker === activeMarker) {
+      setLatitude(marker.latitude);
+      setLongitude(marker.longitude);
+      console.log(marker.latitude, longitude, latitude)
+      
+      if (marker.id === activeMarker) {
         return;
       }
-      setActiveMarker(marker);
+      setActiveMarker(marker.id);
     };
 
     return (
       <LoadScript
       googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}>
       <GoogleMap 
-        zoom={19} 
+        zoom={focus} 
         center={{lat: latitude, lng: longitude}}
         mapContainerClassName="map-container"
         onClick={() => setActiveMarker(null)}
       >
       {listings.map(location => {
-        console.log(location.description)
         return (
           <div key ={location.id}>
-            <MarkerF onLoad={onLoad} position={{lat: +location.latitude, lng: +location.longitude}} onClick={() => handleActiveMarker(location.id)} options={{icon: `http://maps.google.com/mapfiles/ms/icons/${location.color}-dot.png`}}>
+            <MarkerF onLoad={onLoad} position={{lat: +location.latitude, lng: +location.longitude}} onClick={() => handleActiveMarker(location)} options={{icon: `http://maps.google.com/mapfiles/ms/icons/${location.color}-dot.png`}}>
             {activeMarker === location.id ? (
-            <InfoWindow onCloseClick={() => setActiveMarker(null)}>
+            <InfoWindowF onCloseClick={() => setActiveMarker(null)}>
               <div className="infoWindow">
                 <div className="infoWindow-heading">{location.description}</div>
                 <img className="infoWindow-image" src={location.image}/>
                 {/* <button>Click</button> */}
               </div>
-            </InfoWindow>
+            </InfoWindowF>
           ) : null}
             </MarkerF>
           </div>
