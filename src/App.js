@@ -1,4 +1,5 @@
 import Map from './Map';
+import Test from './Test';
 import GeoLocation from './GeoLocation';
 import logo from './logo.svg';
 import './App.css';
@@ -11,7 +12,7 @@ function App() {
         <p>
           Edit <code>src/App.js</code> and save to reload.
         </p>
-        <GeoLocation />
+        
         <Map />
         <a
           className="App-link"
